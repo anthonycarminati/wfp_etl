@@ -57,9 +57,8 @@ ftp_files = ftp.nlst()
 
 # SETUP LIST OF FILES TO EXCLUDE FROM DOWNLOADS
 excl_download = list()
-
-for file in os.listdir(g['DATA_DROP_PATH']):
-    excl_download.append(file)
+for file in os.listdir(g['DATA_DROP_PATH']): excl_download.append(file)
+# ADD CODE TO APPEND file_name FROM etl_sterling TO excl_download LIST
 
 # DOWNLOAD FILES
 for file in ftp_files:
