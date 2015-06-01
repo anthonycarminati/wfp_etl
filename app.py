@@ -55,10 +55,16 @@ ftp = FTP(g['FTP_ADDRESS'])
 ftp.login(g['FTP_USER'], g['FTP_PASSWORD'])
 ftp_files = ftp.nlst()
 
+# SETUP LIST OF FILES TO EXCLUDE FROM DOWNLOADS
+excl_download = list()
+
+for file in os.listdir(g['DATA_DROP_PATH']):
+    excl_download.append(file)
+
 # DOWNLOAD FILES
 for file in ftp_files:
     # P&L Reports
-    if 'PLReport' in file:
+    if 'PLReport' in file and file not in excl_download:
         file_name = file
         file_date = file[16:24]
 
