@@ -68,13 +68,13 @@ for file in ftp_files:
             ftp.voidcmd("NOOP")
             logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
-            logger.info('{0} downloaded successfully!')
+            logger.info('{0} downloaded successfully!'.format(file))
 
-            #CREATE AUDITING RECORD FOR P&L REPORT
-            try:
-                logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
-            except Exception, e:
-                logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
+            ## CREATE AUDITING RECORD FOR P&L REPORT
+            # try:
+            #     logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
+            # except Exception, e:
+            #     logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
 
         except Exception, e:
             logger.error('{0}.'.format(e))
