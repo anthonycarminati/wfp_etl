@@ -20,9 +20,9 @@ g = {
     'POSTGRES_PWD': config.get('warehouse', 'POSTGRES_PWD'),
     'POSTGRES_DB': config.get('warehouse', 'POSTGRES_DB'),
     # DATA PATH INFO
-    'DATA_DROP_PATH': '/opt/wfp/wfp_etl/_data/drop/',
+    'DATA_DROP_PATH': '/opt/wfp/wfp_etl/_data/sterling/drop/',
     # 'DATA_CONVERTED_PATH': '/opt/wfp/wfp_etl/_data/drop/',
-    'DATA_ERROR_PATH': '/opt/wfp/wfp_etl/_data/errors/',
+    'DATA_ERROR_PATH': '/opt/wfp/wfp_etl/_data/sterling/errors/',
     # 'DATA_ETL_TMP_PATH': '/shared/_tmp/telescope_tmp.txt',
     # LOG FILE
     'LOG_FILE_PATH': '/opt/wfp/wfp_etl/_logs/etl_logs.log',
