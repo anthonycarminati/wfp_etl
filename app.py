@@ -25,7 +25,7 @@ g = {
     'DATA_ERROR_PATH': '/opt/wfp/wfp_etl/_data/errors/',
     # 'DATA_ETL_TMP_PATH': '/shared/_tmp/telescope_tmp.txt',
     # LOG FILE
-    'LOG_FILE_PATH': '/opt/wfp/_logs/etl_logs.log',
+    'LOG_FILE_PATH': '/opt/wfp/wfp_etl/_logs/etl_logs.log',
 }
 
 # SETUP LOGGING
