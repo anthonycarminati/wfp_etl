@@ -6,7 +6,7 @@ import psycopg2 as ps
 
 # CONFIG FILE PARSER
 config = ConfigParser.ConfigParser()
-config.readfp(open('/Users/anthonycarminati/Desktop/wfp/wfp_config.conf'))
+config.readfp(open('/opt/wfp/wfp_etl/etl_config.conf'))
 
 # SETUP GLOBAL CONFIG DICT
 g = {
