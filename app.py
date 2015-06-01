@@ -20,12 +20,12 @@ g = {
     'POSTGRES_PWD': config.get('warehouse', 'POSTGRES_PWD'),
     'POSTGRES_DB': config.get('warehouse', 'POSTGRES_DB'),
     # DATA PATH INFO
-    'DATA_DROP_PATH': '/Users/anthonycarminati/Desktop/wfp/_data/',
-    'DATA_CONVERTED_PATH': '/Users/anthonycarminati/Desktop/wfp/_data/',
-    'DATA_ERROR_PATH': '/Users/anthonycarminati/Desktop/wfp/_data/errors/',
-    'DATA_ETL_TMP_PATH': '/shared/_tmp/telescope_tmp.txt',
+    'DATA_DROP_PATH': '/opt/wfp/wfp_etl/_data/drop/',
+    # 'DATA_CONVERTED_PATH': '/opt/wfp/wfp_etl/_data/drop/',
+    'DATA_ERROR_PATH': '/opt/wfp/wfp_etl/_data/errors/',
+    # 'DATA_ETL_TMP_PATH': '/shared/_tmp/telescope_tmp.txt',
     # LOG FILE
-    'LOG_FILE_PATH': '/Users/anthonycarminati/Desktop/wfp/_logs/etl_logs.log',
+    'LOG_FILE_PATH': '/opt/wfp/_logs/etl_logs.log',
 }
 
 # SETUP LOGGING
@@ -49,32 +49,32 @@ conn = ps.connect(host=g['POSTGRES_HOST'],
                   database=g['POSTGRES_DB'])
 cur = conn.cursor()
 
-# # CONNECT TO FTP AND GET FILE LIST
-# logger.info('Checking FTP site for new files.')
-# ftp = FTP(g['FTP_ADDRESS'])
-# ftp.login(g['FTP_USER'], g['FTP_PASSWORD'])
-# ftp_files = ftp.nlst()
-#
-# # DOWNLOAD FILES
-# for file in ftp_files:
-#     # P&L Reports
-#     if 'PLReport' in file:
-#         file_name = file
-#         file_date = file[16:24]
-#
-#         # DOWNLOAD P&L REPORT FROM FTP AND CREATE AUDITING RECORD
-#         try:
-#             # DOWNLOAD P&L REPORT
-#             ftp.voidcmd("NOOP")
-#             logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
-#             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
-#             logger.info('{0} downloaded successfully!')
-#
-#             #CREATE AUDITING RECORD FOR P&L REPORT
-#             try:
-#                 logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
-#             except Exception, e:
-#                 logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
-#
-#         except Exception, e:
-#             logger.error('{0}.'.format(e))
+# CONNECT TO FTP AND GET FILE LIST
+logger.info('Checking FTP site for new files.')
+ftp = FTP(g['FTP_ADDRESS'])
+ftp.login(g['FTP_USER'], g['FTP_PASSWORD'])
+ftp_files = ftp.nlst()
+
+# DOWNLOAD FILES
+for file in ftp_files:
+    # P&L Reports
+    if 'PLReport' in file:
+        file_name = file
+        file_date = file[16:24]
+
+        # DOWNLOAD P&L REPORT FROM FTP AND CREATE AUDITING RECORD
+        try:
+            # DOWNLOAD P&L REPORT
+            ftp.voidcmd("NOOP")
+            logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
+            ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
+            logger.info('{0} downloaded successfully!')
+
+            #CREATE AUDITING RECORD FOR P&L REPORT
+            try:
+                logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
+            except Exception, e:
+                logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
+
+        except Exception, e:
+            logger.error('{0}.'.format(e))
