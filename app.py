@@ -83,7 +83,7 @@ for file in ftp_files:
             #     logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
 
         except Exception, e:
-            logger.error('{0}. File could not be downloaded'.format(e))
+            logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
 # PUSH ALL DOWNLOADS TO DATABASE
 for file_str in os.listdir(g['DATA_DROP_PATH']):
@@ -95,4 +95,4 @@ for file_str in os.listdir(g['DATA_DROP_PATH']):
                 cur.copy_from(file, '"fact_daily_trades"', sep=',', columns=['trader','sequence_no','account','side','symbol','quantity','price','destination','contra','trade_datetime','bo_account','cusip','liq','order_id','exec_broker','ecn_fee','order_datetime','specialist','commission','bb_trade','sec_fee','batch_id','client_order_id','prime','cover_quantity','userr','settle_date','principal','net_amount','allocation_id','allocation_role','is_clearable','nscc_fee','nasdaq_fee','clearing_fee','nyse_etf_fee','amex_etf_fee','listing_exchange','native_liq','order_received_id','bo_group_id'])
                 pass
         except Exception, e:
-            logger.error('{0}. File could not be pushed to database'.format(e))
+            logger.error('{0}. {1} could not be pushed to database'.format(e, file_str))
