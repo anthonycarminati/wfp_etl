@@ -63,20 +63,20 @@ for file in os.listdir(g['DATA_DROP_PATH']):
 
 # DOWNLOAD FILES
 for file in ftp_files:
-    # P&L Reports
-    if 'PLReport' in file and file not in excl_download:
+    # DAILY REPORTS
+    if '_Daily' in file and file not in excl_download:
         file_name = file
         file_date = file[16:24]
 
-        # DOWNLOAD P&L REPORT FROM FTP AND CREATE AUDITING RECORD
+        # DOWNLOAD DAILY REPORT FROM FTP AND CREATE AUDITING RECORD
         try:
-            # DOWNLOAD P&L REPORT
+            # DOWNLOAD DAILY REPORT
             ftp.voidcmd("NOOP")
             logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
             logger.info('{0} downloaded successfully!'.format(file))
 
-            # CREATE AUDITING RECORD FOR P&L REPORT
+            # CREATE AUDITING RECORD FOR DAILY REPORT
             # try:
             #     logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
             # except Exception, e:
