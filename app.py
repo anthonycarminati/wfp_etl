@@ -89,7 +89,7 @@ for file in ftp_files:
 for file in os.listdir(g['DATA_DROP_PATH']):
     # DAILY REPORTS
     if '_Daily' in file:
-        pass
+        # pass
         # CALCULATE NUMBER OF ROWS
         # num_rows = sum(1 for row in csv.reader(open('{0}{1}'.format(g['DATA_DROP_PATH'], file), mode='r')))
         # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
