@@ -85,6 +85,15 @@ for file in ftp_files:
         except Exception, e:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
+# CLEAN UP FILE FROM DROP FOLDER AND PLACE IN CONVERTED FOLDER FOR UPLOAD
+for file in os.listdir(g['DATA_DROP_PATH']):
+    # DAILY REPORTS
+    if '_Daily' in file:
+        pass
+        # CALCULATE NUMBER OF ROWS
+        # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
+        # REMOVE OLD FILE FROM DATA_DROP_PATH
+
 # PUSH ALL DOWNLOADS TO DATABASE
 for file_str in os.listdir(g['DATA_DROP_PATH']):
     # P&L REPORTS
