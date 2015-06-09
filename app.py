@@ -95,7 +95,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
         # REMOVE OLD FILE FROM DATA_DROP_PATH
 
-        with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), "r+", encoding = "utf-8") as file_obj:
+        with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), "r+") as file_obj:
             file_obj.seek(0, os.SEEK_END)
             pos = file_obj.tell() - 1
             while pos > 0 and file_obj.read(1) != "\n":
