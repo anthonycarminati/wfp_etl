@@ -3,6 +3,7 @@ import csv, subprocess, os, re, logging, shutil
 from ftplib import FTP
 import ConfigParser
 import psycopg2 as ps
+import pandas as pd
 
 # CONFIG FILE PARSER
 config = ConfigParser.ConfigParser()
@@ -94,6 +95,10 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
         # REMOVE OLD FILE FROM DATA_DROP_PATH
         try:
+           data = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+           print data.head()
+           print data.tail()
+
             # with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'rb+') as file_obj:
             #     logger.info('Cleaning {0}.'.format(file))
             #     file_obj.seek(0, os.SEEK_END)
@@ -105,7 +110,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
             #         file_obj.seek(pos, os.SEEK_SET)
             #         file_obj.truncate()
 
-            subprocess.call(['wc', '-l', '{0}'.format('{0}{1}'.format(g['DATA_DROP_PATH'], file))])
+            # subprocess.call(['wc', '-l', '{0}'.format('{0}{1}'.format(g['DATA_DROP_PATH'], file))])
 
             # shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
 
