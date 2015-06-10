@@ -116,7 +116,7 @@ for file_str in os.listdir(g['DATA_CONVERTED_PATH']):
     # P&L REPORTS
     if '_Daily' in file_str:
         try:
-            sql_cmd = u'\"\\COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id) FROM \'{q_file_path}\' DELIMITER \',\' WITH CSV HEADER ESCAPE AS \'\\\' QUOTE AS \'\\"\' \"'.format(q_file_path=g['DATA_CONVERTED_PATH']+file_str)
+            sql_cmd = u'\"\\COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id) FROM \'{q_file_path}\' DELIMITER \',\' CSV HEADER ESCAPE AS \'\\\' QUOTE AS \'\\"\' \"'.format(q_file_path=g['DATA_CONVERTED_PATH']+file_str)
             pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             print pgsql_cmd
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
