@@ -95,7 +95,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
         # REMOVE OLD FILE FROM DATA_DROP_PATH
         try:
-            with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), "r+") as file_obj:
+            with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), "rb") as file_obj:
                 logger.info('Cleaning {0}.'.format(file))
                 file_obj.seek(0, os.SEEK_END)
                 pos = file_obj.tell() - 1
@@ -106,7 +106,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                     file_obj.seek(pos, os.SEEK_SET)
                     file_obj.truncate()
 
-                shutil.copy('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
+                shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
 
         except Exception, e:
             logger.error('{0}. Could not clean {1}'.format(e, file))
