@@ -1,5 +1,5 @@
 CREATE TABLE etl_daily_trades(
-  file_name VARCHAR(20)
+  file_name VARCHAR(100)
   ,file_size INT
   ,num_rows INT
   ,load_to_stage_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
