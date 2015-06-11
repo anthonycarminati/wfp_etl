@@ -113,7 +113,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
 
             # LOGGING
-            logger.error('Successfully pushed {0} to database.'.format(file))
+            logger.info('Successfully pushed {0} to database.'.format(file))
 
             #CALCULATE METRICS FOR AUDITING
             file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
@@ -123,6 +123,9 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES (\'{file_name}\', \'{file_size}\', \'{num_rows}\');\"'.format(file_name=file, file_size=file_size, num_rows=num_rows)
             pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
+
+            # LOGGING
+            logger.info('Successfully wrote auditing record for {0}'.format(file))
 
             # REMOVE FILE FROM CONVERTED FOLDER
             # os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
