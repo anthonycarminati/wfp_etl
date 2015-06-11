@@ -102,9 +102,9 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         except Exception, e:
             logger.error('{0}. Could not clean {1}'.format(e, file))
 
-# PUSH ALL DOWNLOADS TO DATABASE
+# STAGE LOAD - PUSH FILES TO DATABASE FROM DATA_FINAL_PATH
 for file in os.listdir(g['DATA_FINAL_PATH']):
-    # P&L REPORTS
+    # DAILY REPORTS
     if '_Daily' in file:
         try:
             # COMPOSE AND EXECUTE COPY COMMAND
