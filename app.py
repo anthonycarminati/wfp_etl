@@ -120,7 +120,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
 
             # COMPOSE AND EXECUTE AUDITING RECORD
-            sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES ({file_name}, {file_size}, {num_rows});\"'.format(file_name=file, file_size='XXXX', num_rows='XXXX')
+            sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES (\'{file_name}\', \'{file_size}\', \'{num_rows}\');\"'.format(file_name=file, file_size='XXXX', num_rows='XXXX')
             pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
 
