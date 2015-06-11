@@ -98,9 +98,8 @@ for file in os.listdir(g['DATA_DROP_PATH']):
             data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             data_out = data_in[data_in.Trader != '*']
             data_out.to_csv('{0}{1}'.format(g['DATA_CONVERTED_PATH'], file), index=False)
-
-            # shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
-
+            logger.info('Successfully loaded {0}'.format(file))
+            # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
         except Exception, e:
             logger.error('{0}. Could not clean {1}'.format(e, file))
 
