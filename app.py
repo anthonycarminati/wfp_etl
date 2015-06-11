@@ -57,15 +57,15 @@ ftp.login(g['FTP_USER'], g['FTP_PASSWORD'])
 ftp_files = ftp.nlst()
 
 # SETUP LIST OF FILES TO EXCLUDE FROM DOWNLOADS
-excl_download = list()
+exclude_file = list()
 for file in os.listdir(g['DATA_DROP_PATH']):
-    excl_download.append(file)
-# ADD CODE TO APPEND file_name FROM etl_sterling TO excl_download LIST
+    exclude_file.append(file)
+# ADD CODE TO APPEND file_name FROM etl_sterling TO exclude_file LIST
 
 # DOWNLOAD FILES
 for file in ftp_files:
     # DAILY REPORTS
-    if '_Daily' in file and file not in excl_download:
+    if '_Daily' in file and file not in exclude_file:
         file_name = file
         file_date = file[16:24]
 
@@ -89,29 +89,39 @@ for file in ftp_files:
 # CLEAN UP FILE FROM DROP FOLDER AND PLACE IN CONVERTED FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
     # DAILY REPORTS
-    if '_Daily' in file:
+    if '_Daily' in file and file not in exclude_file:
         try:
             # READ, CLEAN, AND WRITE CONVERTED DATA
             data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             data_out = data_in[data_in.Trader != '*']
             data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
             logger.info('Successfully loaded {0}'.format(file))
+
             # REMOVE FILE FROM DROP ZONE
             # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
         except Exception, e:
             logger.error('{0}. Could not clean {1}'.format(e, file))
 
 # PUSH ALL DOWNLOADS TO DATABASE
-for file_str in os.listdir(g['DATA_FINAL_PATH']):
+for file in os.listdir(g['DATA_FINAL_PATH']):
     # P&L REPORTS
-    if '_Daily' in file_str:
+    if '_Daily' in file and file not in exclude_file:
         try:
-            sql_cmd = u'\"\\COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id) FROM \'{q_file_path}\' WITH CSV HEADER DELIMITER \',\' \"'.format(q_file_path=g['DATA_FINAL_PATH'] + file_str)
+            sql_cmd = u'\"\\COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id) FROM \'{q_file_path}\' WITH CSV HEADER DELIMITER \',\' \"'.format(q_file_path='{0}{1}'.format(g['DATA_FINAL_PATH'], file))
             pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
+
+            file_size = os.stat('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
+
+            # INSERT AUDITING RECORD
+            sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES ({file_name}, {file_size}, {num_rows});\"'.format(file_name=file, file_size='XXXX', num_rows='XXXX')
+            pgsql_cmd = u''
+            pgsql_status = subprocess.call(pgsql_cmd, shell=True)
+
             # REMOVE FILE FROM CONVERTED FOLDER
             # os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
         except Exception, e:
-            logger.error('{0}. {1} could not be pushed to database'.format(e, file_str))
+            logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
 # KICK OFF STORED PROCEDURE FOR STAGE TO FINAL LOAD
