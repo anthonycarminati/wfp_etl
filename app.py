@@ -88,19 +88,20 @@ for file in ftp_files:
 
 # CLEAN UP FILE FROM DROP FOLDER AND PLACE IN CONVERTED FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
-    # DAILY REPORTS
-    if '_Daily' in file:
-        try:
-            # READ, CLEAN, AND WRITE CONVERTED DATA
-            data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-            data_out = data_in[data_in.Trader != '*']
-            data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
-            logger.info('Successfully converted {0}'.format(file))
+    if file not in os.listdir(g['DATA_FINAL_PATH']):
+        # DAILY REPORTS
+        if '_Daily' in file:
+            try:
+                # READ, CLEAN, AND WRITE CONVERTED DATA
+                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                data_out = data_in[data_in.Trader != '*']
+                data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
+                logger.info('Successfully converted {0}'.format(file))
 
-            # REMOVE FILE FROM DROP ZONE
-            # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-        except Exception, e:
-            logger.error('{0}. Could not clean {1}'.format(e, file))
+                # REMOVE FILE FROM DROP ZONE
+                # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+            except Exception, e:
+                logger.error('{0}. Could not clean {1}'.format(e, file))
 
 # STAGE LOAD - PUSH FILES TO DATABASE FROM DATA_FINAL_PATH
 for file in os.listdir(g['DATA_FINAL_PATH']):
