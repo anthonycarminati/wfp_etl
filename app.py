@@ -77,12 +77,6 @@ for file in ftp_files:
             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
             logger.info('{0} downloaded successfully!'.format(file))
 
-            # CREATE AUDITING RECORD FOR DAILY REPORT
-            # try:
-            #     logger.info('NEED TO CREATE AUDITING RECORD FOR {0}.'.format(file))
-            # except Exception, e:
-            #     logger.error('{0}. Could not create etl_auditing record for {1}'.format(e, file))
-
         except Exception, e:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
@@ -129,7 +123,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.info('Successfully wrote auditing record for {0}'.format(file))
 
             # REMOVE FILE FROM CONVERTED FOLDER
-            # os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
         except Exception, e:
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
