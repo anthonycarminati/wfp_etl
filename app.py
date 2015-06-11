@@ -97,7 +97,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         try:
             data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             data_out = data_in[data_in.Trader != '*']
-            data_out.to_csv('{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
+            data_out.to_csv('{0}{1}'.format(g['DATA_CONVERTED_PATH'], file), index=False)
 
             # shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
 
