@@ -95,24 +95,11 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         # TAKE ALL RECORDS EXCEPT FOR LAST ONE AND WRITE TO DATA_CONVERTED_PATH FOLDER
         # REMOVE OLD FILE FROM DATA_DROP_PATH
         try:
-           data = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-
+           data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+           data_out = data_in[data_in.Trader != '*']
+           data_out.to_csv('{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
            
-
-            # with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'rb+') as file_obj:
-            #     logger.info('Cleaning {0}.'.format(file))
-            #     file_obj.seek(0, os.SEEK_END)
-            #     pos = file_obj.tell() - 1
-            #     while pos > 0 and file_obj.read(1) != "\n":
-            #         pos -= 1
-            #         file_obj.seek(pos, os.SEEK_SET)
-            #     if pos > 0:
-            #         file_obj.seek(pos, os.SEEK_SET)
-            #         file_obj.truncate()
-
-            # subprocess.call(['wc', '-l', '{0}'.format('{0}{1}'.format(g['DATA_DROP_PATH'], file))])
-
-            # shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
+           # shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_CONVERTED_PATH'], file))
 
         except Exception, e:
             logger.error('{0}. Could not clean {1}'.format(e, file))
