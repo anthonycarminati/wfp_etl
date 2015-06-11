@@ -96,8 +96,8 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         # REMOVE OLD FILE FROM DATA_DROP_PATH
         try:
            data = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-           print data.head()
-           print data.tail()
+
+           
 
             # with open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'rb+') as file_obj:
             #     logger.info('Cleaning {0}.'.format(file))
