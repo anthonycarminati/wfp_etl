@@ -116,7 +116,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.error('Successfully pushed {0} to database.'.format(file))
 
             #CALCULATE METRICS FOR AUDITING
-            file_size = os.stat('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
 
             # COMPOSE AND EXECUTE AUDITING RECORD
