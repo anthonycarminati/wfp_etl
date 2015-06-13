@@ -42,7 +42,6 @@ CREATE TABLE stg_daily_trades(
   ,bo_group_id VARCHAR(255)
   ,file_name	VARCHAR(255)
   ,file_date	VARCHAR(255)
-  ,file_timestamp	TIMESTAMP
 );
 
 CREATE TABLE
