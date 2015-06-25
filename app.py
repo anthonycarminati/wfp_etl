@@ -24,7 +24,6 @@ g = {
     'DATA_DROP_PATH': '/opt/wfp/wfp_etl/_data/sterling/drop/',
     'DATA_FINAL_PATH': '/opt/wfp/wfp_etl/_data/sterling/final/',
     'DATA_ERROR_PATH': '/opt/wfp/wfp_etl/_data/sterling/errors/',
-    # 'DATA_ETL_TMP_PATH': '/shared/_tmp/telescope_tmp.txt',
     # LOG FILE
     'LOG_FILE_PATH': '/opt/wfp/wfp_etl/_logs/etl_logs.log',
 }
@@ -46,7 +45,7 @@ logger.addHandler(ch)
 conn = ps.connect(host=g['POSTGRES_HOST'],
                   port='5432',
                   user=g['POSTGRES_USER'],
-                  password=g['POSTGRES_PWD'],
+                  #password=g['POSTGRES_PWD'],
                   database=g['POSTGRES_DB'])
 cur = conn.cursor()
 
