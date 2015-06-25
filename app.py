@@ -104,7 +104,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
         try:
             # COMPOSE AND EXECUTE COPY COMMAND
             sql_cmd = u'\"\\COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id) FROM \'{q_file_path}\' WITH CSV HEADER DELIMITER \',\' \"'.format(q_file_path='{0}{1}'.format(g['DATA_FINAL_PATH'], file))
-            pgsql_cmd = u'sudo psql {pg_user} -W {pg_pwd} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_pwd=g['POSTGRES_PWD'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
+            pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_pwd=g['POSTGRES_PWD'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
 
             # LOGGING
@@ -116,7 +116,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
 
             # COMPOSE AND EXECUTE AUDITING RECORD
             sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES (\'{file_name}\', \'{file_size}\', \'{num_rows}\');\"'.format(file_name=file, file_size=file_size, num_rows=num_rows)
-            pgsql_cmd = u'sudo psql {pg_user} -W {pg_pwd} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_pwd=g['POSTGRES_PWD'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
+            pgsql_cmd = u'sudo psql {pg_user} -h {pg_host} -d {pg_db} -p 5432 -c {sql_cmd}'.format(pg_user=g['POSTGRES_USER'], pg_pwd=g['POSTGRES_PWD'], pg_host=g['POSTGRES_HOST'], pg_db=g['POSTGRES_DB'], sql_cmd=sql_cmd)
             pgsql_status = subprocess.call(pgsql_cmd, shell=True)
 
             # LOGGING
