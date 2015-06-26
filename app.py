@@ -117,7 +117,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             # COMPOSE AND EXECUTE AUDITING RECORD
             # sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES (\'{file_name}\', \'{file_size}\', \'{num_rows}\');\"'.format(file_name=file, file_size=file_size, num_rows=num_rows)
             sql_cmd = """INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
-            cur.execute(sql_cmd, {'file_name': file_name, 'file_size': file_size, 'num_rows': num_rows})
+            cur.execute(sql_cmd, {'file_name': file, 'file_size': file_size, 'num_rows': num_rows})
 
             # LOGGING
             logger.info('Successfully wrote auditing record for {0}'.format(file))
