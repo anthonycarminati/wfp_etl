@@ -59,7 +59,13 @@ ftp_files = ftp.nlst()
 exclude_file = list()
 for file in os.listdir(g['DATA_DROP_PATH']):
     exclude_file.append(file)
-# ADD CODE TO APPEND file_name FROM etl_sterling TO exclude_file LIST
+
+# RETRIEVE LIST OF FILES ALREADY PUSHED TO DATABASE
+sql_cmd = """SELECT file_name FROM etl_daily_trades;"""
+cur.execute(sql_cmd)
+for file in cur:
+    print file
+    exclude_file.append(file)
 
 # DOWNLOAD FILES
 for file in ftp_files:
@@ -115,7 +121,6 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
 
             # COMPOSE AND EXECUTE AUDITING RECORD
-            # sql_cmd =  u'\"INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES (\'{file_name}\', \'{file_size}\', \'{num_rows}\');\"'.format(file_name=file, file_size=file_size, num_rows=num_rows)
             sql_cmd = """INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
             cur.execute(sql_cmd, {'file_name': file, 'file_size': file_size, 'num_rows': num_rows})
 
