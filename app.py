@@ -110,7 +110,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
                 cur.copy_expert(sql_cmd, copy_file)
 
             # # LOGGING
-            # logger.info('Successfully pushed {0} to database.'.format(file))
+            logger.info('Successfully pushed {0} to database.'.format(file))
             #
             # #CALCULATE METRICS FOR AUDITING
             # file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
