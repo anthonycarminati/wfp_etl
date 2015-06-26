@@ -1,5 +1,6 @@
 # DEFINE IMPORTS
-import csv, subprocess, os, re, logging, shutil
+import os
+import logging
 from ftplib import FTP
 import ConfigParser
 import psycopg2 as ps
@@ -64,8 +65,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
 sql_cmd = """SELECT file_name FROM etl_daily_trades;"""
 cur.execute(sql_cmd)
 for file in cur:
-    print file
-    exclude_file.append(file[0]) # CURSOR RETURNS DATA IN TUPLE
+    exclude_file.append(file[0])  # CURSOR RETURNS DATA IN TUPLE
 
 # DOWNLOAD FILES
 for file in ftp_files:
@@ -113,12 +113,12 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
                 cur.copy_expert(sql_cmd, copy_file)
                 conn.commit()
 
-            # # LOGGING
+            # LOGGING
             logger.info('Successfully pushed {0} to database.'.format(file))
 
-            #CALCULATE METRICS FOR AUDITING
+            # CALCULATE METRICS FOR AUDITING
             file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
-            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file))) - 1
 
             # COMPOSE AND EXECUTE AUDITING RECORD
             sql_cmd = """INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
