@@ -82,10 +82,18 @@ for file in ftp_files:
             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
             logger.info('{0} downloaded successfully!'.format(file))
 
+            # CREATE AUDITING RECORD HERE
+            #############################
+            #############################
+
         except Exception, e:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
-# CLEAN UP FILE FROM DROP FOLDER AND PLACE IN CONVERTED FOLDER FOR UPLOAD
+    # OPEN POSITION REPORTS
+    if '_PosAvgReports' in file and file not in exclude_file:
+        pass
+
+# CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in os.listdir(g['DATA_FINAL_PATH']):
         # DAILY REPORTS
@@ -101,6 +109,10 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             except Exception, e:
                 logger.error('{0}. Could not clean {1}'.format(e, file))
+
+        # OPEN POSITION REPORTS
+        if '_PosAvgReports' in file:
+            pass
 
 # STAGE LOAD - PUSH FILES TO DATABASE FROM DATA_FINAL_PATH
 for file in os.listdir(g['DATA_FINAL_PATH']):
@@ -131,5 +143,9 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
         except Exception, e:
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
+
+    # OPEN POSITION REPORTS
+    if '_PosAvgReports' in file:
+        pass
 
 # KICK OFF STORED PROCEDURE FOR STAGE TO FINAL LOAD

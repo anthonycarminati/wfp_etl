@@ -86,4 +86,7 @@ SELECT
   ,CAST(order_received_id AS VARCHAR(25))
   ,CAST(bo_group_id AS VARCHAR(4))
 FROM stg_daily_trades;
+
+TRUNCATE TABLE stg_daily_trades;
+
 ' LANGUAGE SQL;
