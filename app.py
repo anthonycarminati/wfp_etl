@@ -58,14 +58,14 @@ ftp_files = ftp.nlst()
 # SETUP LIST OF FILES TO EXCLUDE FROM DOWNLOADS
 exclude_file = list()
 for file in os.listdir(g['DATA_DROP_PATH']):
-    exclude_file.append(file[0])
+    exclude_file.append(file)
 
 # RETRIEVE LIST OF FILES ALREADY PUSHED TO DATABASE
 sql_cmd = """SELECT file_name FROM etl_daily_trades;"""
 cur.execute(sql_cmd)
 for file in cur:
     print file
-    exclude_file.append(file)
+    exclude_file.append(file[0]) # CURSOR RETURNS DATA IN TUPLE
 
 # DOWNLOAD FILES
 for file in ftp_files:
