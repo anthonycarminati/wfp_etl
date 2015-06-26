@@ -98,7 +98,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 logger.info('Successfully converted {0}'.format(file))
 
                 # REMOVE FILE FROM DROP ZONE
-                # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             except Exception, e:
                 logger.error('{0}. Could not clean {1}'.format(e, file))
 
@@ -128,7 +128,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.info('Successfully wrote auditing record for {0}'.format(file))
 
             # REMOVE FILE FROM CONVERTED FOLDER
-            # os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
         except Exception, e:
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
