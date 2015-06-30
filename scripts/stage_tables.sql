@@ -44,4 +44,7 @@ CREATE TABLE stg_daily_trades(
   ,file_date	VARCHAR(255)
 );
 
-CREATE TABLE
+
+
+
+
