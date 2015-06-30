@@ -95,22 +95,22 @@ for file in ftp_files:
 
 # HELPER FUNCTIONS - MOVE TO HELPER FUNCTION MODULE IN THE FUTURE
 def func_side_desc(row):
-    if row['side'] == 'B':
+    if row['Side'] == 'B':
         return 'Buy'
     else:
         return 'Sell'
 
 def func_calculated_quantity(row):
-    if row['side'] == 'B':
-        return row['quantity'] * 1
+    if row['Side'] == 'B':
+        return row['Qty'] * 1
     else:
-        return row['quantity'] * -1
+        return row['Qty'] * -1
 
 def func_calculated_principal(row):
-    if row['side'] == 'B':
-        return row['principal'] * 1
+    if row['Side'] == 'B':
+        return row['Principal'] * 1
     else:
-        return row['principal'] * -1
+        return row['Principal'] * -1
 
 def func_ticket_fee(row):
     return 1
