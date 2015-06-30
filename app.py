@@ -5,6 +5,7 @@ from ftplib import FTP
 import ConfigParser
 import psycopg2 as ps
 import pandas as pd
+import shutil
 
 # CONFIG FILE PARSER
 config = ConfigParser.ConfigParser()
@@ -153,7 +154,9 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 # REMOVE FILE FROM DROP ZONE
                 os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
             except Exception, e:
-                logger.error('{0}. Could not clean {1}'.format(e, file))
+                logger.error('{0}. Could not pre-process {1}'.format(e, file))
+                shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
+                logger.error('{0}. {1} moved to errors folder'.format(e, file))
 
         # OPEN POSITION REPORTS
         if '_PosAvgReports' in file:
