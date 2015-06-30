@@ -107,22 +107,22 @@ def func_calculated_quantity(row):
         return row['quantity'] * -1
 
 def func_calculated_principal(row):
-    pass
+    return 1
 
 def func_ticket_fee(row):
-    pass
+    return 1
 
 def func_total_fee(row):
-    pass
+    return 1
 
 def func_away_ticket(row):
-    pass
+    return 1
 
 def func_total_cost(row):
-    pass
+    return 1
 
 def func_calculated_net(row):
-    pass
+    return 1
 
 
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
@@ -136,6 +136,12 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 data_out = data_in[data_in.Trader != '*']
 
                 data_out['calculated_quantity'] = data_out.apply(func_calculated_quantity, axis=1)
+                data_out['calculated_principal'] = data_out.apply(func_calculated_principal, axis=1)
+                data_out['ticket_fee'] = data_out.apply(func_ticket_fee, axis=1)
+                data_out['total_fee'] = data_out.apply(func_total_fee, axis=1)
+                data_out['away_ticket'] = data_out.apply(func_away_ticket, axis=1)
+                data_out['total_cost'] = data_out.apply(func_total_cost, axis=1)
+                data_out['calculated_net'] = data_out.apply(func_calculated_net, axis=1)
 
                 data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
                 logger.info('Successfully converted {0}'.format(file))

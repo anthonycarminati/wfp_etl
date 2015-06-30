@@ -40,9 +40,17 @@ CREATE TABLE stg_daily_trades(
   ,native_liq VARCHAR(255)
   ,order_received_id VARCHAR(255)
   ,bo_group_id VARCHAR(255)
+  ,calculated_quantity VARCHAR(255) --calculated in python
+  ,calculated_principal VARCHAR(255) --calculated in python
+  ,ticket_fee VARCHAR(255) --calculated in python
+  ,total_fee VARCHAR(255) --calculated in python
+  ,away_ticket VARCHAR(255) --calculated in python
+  ,total_cost VARCHAR(255) --calculated in python
+  ,calculated_net VARCHAR(255) --calculated in python
   ,file_name	VARCHAR(255)
   ,file_date	VARCHAR(255)
 );
+GRANT ALL ON stg_daily_trades to wfp_etl;
 
 
 
