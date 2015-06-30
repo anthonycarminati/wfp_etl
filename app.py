@@ -138,6 +138,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
                 data_out = data_in[data_in.Trader != '*']
 
+                data_out['side_desc'] = data_out.apply(func_side_desc, axis=1)
                 data_out['calculated_quantity'] = data_out.apply(func_calculated_quantity, axis=1)
                 data_out['calculated_principal'] = data_out.apply(func_calculated_principal, axis=1)
                 data_out['ticket_fee'] = data_out.apply(func_ticket_fee, axis=1)
