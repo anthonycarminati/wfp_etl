@@ -93,6 +93,38 @@ for file in ftp_files:
     if '_PosAvgReports' in file and file not in exclude_file:
         pass
 
+# HELPER FUNCTIONS - MOVE TO HELPER FUNCTION MODULE IN THE FUTURE
+def func_side_desc(row):
+    if row['side'] == 'B':
+        return 'Buy'
+    else:
+        return 'Sell'
+
+def func_calculated_quantity(row):
+    if row['side'] == 'B':
+        return row['quantity'] * 1
+    else:
+        return row['quantity'] * -1
+
+def func_calculated_principal(row):
+    pass
+
+def func_ticket_fee(row):
+    pass
+
+def func_total_fee(row):
+    pass
+
+def func_away_ticket(row):
+    pass
+
+def func_total_cost(row):
+    pass
+
+def func_calculated_net(row):
+    pass
+
+
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in os.listdir(g['DATA_FINAL_PATH']):
@@ -102,6 +134,9 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                 # READ, CLEAN, AND WRITE CONVERTED DATA
                 data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
                 data_out = data_in[data_in.Trader != '*']
+
+                data_out['calculated_quantity'] = data_out.apply(func_calculated_quantity, axis=1)
+
                 data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
                 logger.info('Successfully converted {0}'.format(file))
 
