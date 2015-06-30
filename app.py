@@ -107,7 +107,10 @@ def func_calculated_quantity(row):
         return row['quantity'] * -1
 
 def func_calculated_principal(row):
-    return 1
+    if row['side'] == 'B':
+        return row['principal'] * 1
+    else:
+        return row['principal'] * -1
 
 def func_ticket_fee(row):
     return 1
