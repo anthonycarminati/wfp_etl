@@ -128,7 +128,7 @@ def func_calculated_net(row):
     return 1
 
 
-# CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
+# CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FO R UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in os.listdir(g['DATA_FINAL_PATH']):
         # DAILY REPORTS
