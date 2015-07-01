@@ -164,12 +164,13 @@ for file in os.listdir(g['DATA_DROP_PATH']):
 
 # STAGE LOAD - PUSH FILES TO DATABASE FROM DATA_FINAL_PATH
 for file in os.listdir(g['DATA_FINAL_PATH']):
+
     # DAILY REPORTS
     if '_Daily' in file:
         try:
             # COMPOSE AND EXECUTE COPY COMMAND
             with open('{0}{1}'.format(g['DATA_FINAL_PATH'], file), 'rb') as copy_file:
-                sql_cmd = """COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id,calculated_quantity,calculated_principal,ticket_fee,total_fee,away_ticket,total_cost,calculated_net,'{0}' AS file_name) FROM STDIN WITH CSV HEADER DELIMITER AS ',';""".format(file)
+                sql_cmd = """COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id,calculated_quantity,calculated_principal,ticket_fee,total_fee,away_ticket,total_cost,calculated_net) FROM STDIN WITH CSV HEADER DELIMITER AS ','; UPDATE stg_daily_trades SET file_name = '{0}' WHERE file_name IS NULL;""".format(file)
                 cur.copy_expert(sql_cmd, copy_file)
                 conn.commit()
 
@@ -189,6 +190,12 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
 
             # REMOVE FILE FROM CONVERTED FOLDER
             os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+
+            # EXECUTE STORED PROCEDURE FOR STAGE TO FINAL LOAD
+            # sql_cmd = """EXECUTE STORED_PROCEDURE_NAME;""".format(file)
+            # cur.copy_expert(sql_cmd, copy_file)
+            # conn.commit()
+
         except Exception, e:
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
@@ -196,4 +203,3 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
     if '_PosAvgReports' in file:
         pass
 
-# KICK OFF STORED PROCEDURE FOR STAGE TO FINAL LOAD
