@@ -169,7 +169,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
         try:
             # COMPOSE AND EXECUTE COPY COMMAND
             with open('{0}{1}'.format(g['DATA_FINAL_PATH'], file), 'rb') as copy_file:
-                sql_cmd = """COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id,calculated_quantity,calculated_principal,ticket_fee,total_fee,away_ticket,total_cost,calculated_net,{0} AS file_name) FROM STDIN WITH CSV HEADER DELIMITER AS ',';""".format(file)
+                sql_cmd = """COPY stg_daily_trades(trader,sequence_no,account,side,symbol,quantity,price,destination,contra,trade_datetime,bo_account,cusip,liq,order_id,exec_broker,ecn_fee,order_datetime,specialist,commission,bb_trade,sec_fee,batch_id,client_order_id,prime,cover_quantity,userr,settle_date,principal,net_amount,allocation_id,allocation_role,is_clearable,nscc_fee,nasdaq_fee,clearing_fee,nyse_etf_fee,amex_etf_fee,listing_exchange,native_liq,order_received_id,bo_group_id,calculated_quantity,calculated_principal,ticket_fee,total_fee,away_ticket,total_cost,calculated_net,'{0}' AS file_name) FROM STDIN WITH CSV HEADER DELIMITER AS ',';""".format(file)
                 cur.copy_expert(sql_cmd, copy_file)
                 conn.commit()
 
