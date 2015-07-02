@@ -134,7 +134,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in os.listdir(g['DATA_FINAL_PATH']):
         # DAILY REPORTS
         if '_Daily' in file:
-            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_DROP_PATH'], file)))
             if num_rows > 2:
                 try:
                     # READ AND CLEAN DATA
