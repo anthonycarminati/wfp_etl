@@ -134,29 +134,33 @@ for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in os.listdir(g['DATA_FINAL_PATH']):
         # DAILY REPORTS
         if '_Daily' in file:
-            try:
-                # READ, CLEAN, AND WRITE CONVERTED DATA
-                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-                data_out = data_in[data_in.Trader != '*']
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file)))
+            if num_rows > 2:
+                try:
+                    # READ AND CLEAN DATA
+                    data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                    data_out = data_in[data_in.Trader != '*']
 
-                data_out['side_desc'] = data_out.apply(func_side_desc, axis=1)
-                data_out['calculated_quantity'] = data_out.apply(func_calculated_quantity, axis=1)
-                data_out['calculated_principal'] = data_out.apply(func_calculated_principal, axis=1)
-                data_out['ticket_fee'] = data_out.apply(func_ticket_fee, axis=1)
-                data_out['total_fee'] = data_out.apply(func_total_fee, axis=1)
-                data_out['away_ticket'] = data_out.apply(func_away_ticket, axis=1)
-                data_out['total_cost'] = data_out.apply(func_total_cost, axis=1)
-                data_out['calculated_net'] = data_out.apply(func_calculated_net, axis=1)
+                    # ADD DERIVED COLUMNS
+                    data_out['side_desc'] = data_out.apply(func_side_desc, axis=1)
+                    data_out['calculated_quantity'] = data_out.apply(func_calculated_quantity, axis=1)
+                    data_out['calculated_principal'] = data_out.apply(func_calculated_principal, axis=1)
+                    data_out['ticket_fee'] = data_out.apply(func_ticket_fee, axis=1)
+                    data_out['total_fee'] = data_out.apply(func_total_fee, axis=1)
+                    data_out['away_ticket'] = data_out.apply(func_away_ticket, axis=1)
+                    data_out['total_cost'] = data_out.apply(func_total_cost, axis=1)
+                    data_out['calculated_net'] = data_out.apply(func_calculated_net, axis=1)
 
-                data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
-                logger.info('Successfully converted {0}'.format(file))
+                    # WRITE NEW FILE TO FINAL FOLDER
+                    data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False)
+                    logger.info('Successfully converted {0}'.format(file))
 
-                # REMOVE FILE FROM DROP ZONE
-                os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
-            except Exception, e:
-                logger.error('{0}. Could not pre-process {1}'.format(e, file))
-                shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
-                logger.error('{0}. {1} moved to errors folder'.format(e, file))
+                    # REMOVE FILE FROM DROP ZONE
+                    os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                except Exception, e:
+                    logger.error('{0}. Could not pre-process {1}'.format(e, file))
+                    shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
+                    logger.error('{0}. {1} moved to errors folder'.format(e, file))
 
         # OPEN POSITION REPORTS
         if '_PosAvgReports' in file:
