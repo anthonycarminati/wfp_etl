@@ -156,7 +156,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                     logger.info('Successfully converted {0}'.format(file))
 
                     # REMOVE FILE FROM DROP ZONE
-                    os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                    # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
                 except Exception, e:
                     logger.error('{0}. Could not pre-process {1}'.format(e, file))
                     shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
