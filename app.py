@@ -6,6 +6,7 @@ import ConfigParser
 import psycopg2 as ps
 import pandas as pd
 import shutil
+from .helpers import *
 
 # CONFIG FILE PARSER
 config = ConfigParser.ConfigParser()
@@ -42,14 +43,6 @@ fh.setFormatter(formatter)
 ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
-
-# SETUP DB CONNECTION
-# conn = ps.connect(host=g['POSTGRES_HOST'],
-#                   port='5432',
-#                   user=g['POSTGRES_USER'],
-#                   password=g['POSTGRES_PWD'],
-#                   database=g['POSTGRES_DB'])
-# cur = conn.cursor()
 
 # CONNECT TO FTP AND GET FILE LIST
 logger.info('Checking FTP site for new files.')
@@ -100,47 +93,6 @@ for file in ftp_files:
     if '_PosAvgReports' in file and file not in exclude_file:
         pass
 
-# HELPER FUNCTIONS - MOVE TO HELPER FUNCTION MODULE IN THE FUTURE
-def func_side_desc(row):
-    if row['Side'] == 'B':
-        return 'Buy'
-    else:
-        return 'Sell'
-
-def func_calculated_quantity(row):
-    if row['Side'] == 'B':
-        return row['Qty'] * 1
-    else:
-        return row['Qty'] * -1
-
-def func_calculated_principal(row):
-    if row['Side'] == 'B':
-        return row['Principal'] * 1
-    else:
-        return row['Principal'] * -1
-
-def func_ticket_fee(row):
-    if row['Prime'] == '':
-        return .0011 * row['Qty']
-    else:
-        return 0
-
-def func_total_fee(row):
-    return row['ticket_fee'] + row['ECN Fee'] + row['SEC Fee']
-
-def func_away_ticket(row):
-    if row['Commission'] == '0':
-        return 0
-    else:
-        return 15
-
-def func_total_cost(row):
-    return row['total_fee'] + row['away_ticket'] # + row['Commission'] # adding this back would double count commission
-
-def func_calculated_net(row):
-    return row['calculated_principal'] - row['total_cost']
-
-
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
     if file not in exclude_file:
@@ -168,7 +120,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                     logger.info('Successfully converted {0}'.format(file))
 
                     # REMOVE FILE FROM DROP ZONE
-                    os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                    # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
                 except Exception, e:
                     logger.error('{0}. Could not pre-process {1}'.format(e, file))
                     shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
