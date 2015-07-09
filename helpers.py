@@ -39,3 +39,29 @@ def func_total_cost(row):
 
 def func_calculated_net(row):
     return row['calculated_principal'] - row['total_cost']
+
+# ############################################################################
+# PSYCOPG2 QUICK COMMIT
+# ############################################################################
+import psycopg2 as ps
+def db_write(sql_cmd):
+    conn = ps.connect(host=g['POSTGRES_HOST'],
+                      port='5432',
+                      user=g['POSTGRES_USER'],
+                      password=g['POSTGRES_PWD'],
+                      database=g['POSTGRES_DB'])
+    cur = conn.cursor()
+    cur.execute(sql_cmd)
+    conn.commit()
+    # RETURN A STATUS MESSAGE HERE
+
+def db_read(sql_cmd):
+    conn = ps.connect(host=g['POSTGRES_HOST'],
+                      port='5432',
+                      user=g['POSTGRES_USER'],
+                      password=g['POSTGRES_PWD'],
+                      database=g['POSTGRES_DB'])
+    cur = conn.cursor()
+    cur.execute(sql_cmd)
+    return cur
+
