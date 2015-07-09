@@ -46,14 +46,25 @@ def func_calculated_net(row):
 # ############################################################################
 # PSYCOPG2 QUICK FUNCTIONS
 # ############################################################################
-def db_write(sql_cmd):
+def etl_update(sql_cmd, var_dict):
     conn = ps.connect(host=g['POSTGRES_HOST'],
                       port='5432',
                       user=g['POSTGRES_USER'],
                       password=g['POSTGRES_PWD'],
                       database=g['POSTGRES_DB'])
     cur = conn.cursor()
-    cur.execute(sql_cmd)
+    cur.execute(sql_cmd, var_dict)
+    conn.commit()
+    # RETURN A STATUS MESSAGE HERE
+
+def bulk_copy(sql_cmd, file):
+    conn = ps.connect(host=g['POSTGRES_HOST'],
+                      port='5432',
+                      user=g['POSTGRES_USER'],
+                      password=g['POSTGRES_PWD'],
+                      database=g['POSTGRES_DB'])
+    cur = conn.cursor()
+    cur.copy_expert(sql_cmd, file)
     conn.commit()
     # RETURN A STATUS MESSAGE HERE
 
