@@ -197,7 +197,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
                   user=g['POSTGRES_USER'],
                   password=g['POSTGRES_PWD'],
                   database=g['POSTGRES_DB'])
-                cur = conn.cursor()
+            cur = conn.cursor()
             sql_cmd = """INSERT INTO etl_daily_trades(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
             cur.execute(sql_cmd, {'file_name': file, 'file_size': file_size, 'num_rows': num_rows})
             conn.commit()
