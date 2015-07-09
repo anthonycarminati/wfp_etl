@@ -1,3 +1,6 @@
+import psycopg2 as ps
+from .config import g
+
 # ############################################################################
 # DAILY TRADE CALCULATIONS
 # ############################################################################
@@ -41,9 +44,8 @@ def func_calculated_net(row):
     return row['calculated_principal'] - row['total_cost']
 
 # ############################################################################
-# PSYCOPG2 QUICK COMMIT
+# PSYCOPG2 QUICK FUNCTIONS
 # ############################################################################
-import psycopg2 as ps
 def db_write(sql_cmd):
     conn = ps.connect(host=g['POSTGRES_HOST'],
                       port='5432',
