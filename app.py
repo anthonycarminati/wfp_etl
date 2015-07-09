@@ -44,12 +44,12 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 # SETUP DB CONNECTION
-conn = ps.connect(host=g['POSTGRES_HOST'],
-                  port='5432',
-                  user=g['POSTGRES_USER'],
-                  password=g['POSTGRES_PWD'],
-                  database=g['POSTGRES_DB'])
-cur = conn.cursor()
+# conn = ps.connect(host=g['POSTGRES_HOST'],
+#                   port='5432',
+#                   user=g['POSTGRES_USER'],
+#                   password=g['POSTGRES_PWD'],
+#                   database=g['POSTGRES_DB'])
+# cur = conn.cursor()
 
 # CONNECT TO FTP AND GET FILE LIST
 logger.info('Checking FTP site for new files.')
@@ -63,6 +63,12 @@ for file in os.listdir(g['DATA_DROP_PATH']):
     exclude_file.append(file)
 
 # RETRIEVE LIST OF FILES ALREADY PUSHED TO DATABASE
+conn = ps.connect(host=g['POSTGRES_HOST'],
+                  port='5432',
+                  user=g['POSTGRES_USER'],
+                  password=g['POSTGRES_PWD'],
+                  database=g['POSTGRES_DB'])
+cur = conn.cursor()
 sql_cmd = """SELECT file_name FROM etl_daily_trades;"""
 cur.execute(sql_cmd)
 for file in cur:
@@ -131,7 +137,7 @@ def func_calculated_net(row):
 
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
-    if file not in os.listdir(g['DATA_FINAL_PATH']) and file not in exclude_file:
+    if file not in exclude_file:
         # DAILY REPORTS
         if '_Daily' in file:
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_DROP_PATH'], file)))
