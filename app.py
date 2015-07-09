@@ -138,7 +138,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
             if num_rows > 2:
                 try:
                     # READ AND CLEAN DATA
-                    data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                    data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
                     data_out = data_in[data_in.Trader != '*']
 
                     # ADD DERIVED COLUMNS

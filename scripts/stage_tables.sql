@@ -40,6 +40,7 @@ CREATE TABLE stg_daily_trades(
   ,native_liq VARCHAR(255)
   ,order_received_id VARCHAR(255)
   ,bo_group_id VARCHAR(255)
+  ,side_desc VARCHAR(255) --figured out in python
   ,calculated_quantity VARCHAR(255) --calculated in python
   ,calculated_principal VARCHAR(255) --calculated in python
   ,ticket_fee VARCHAR(255) --calculated in python
