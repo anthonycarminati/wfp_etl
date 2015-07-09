@@ -199,7 +199,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.info('Successfully wrote auditing record for {0}'.format(file))
 
             # REMOVE FILE FROM CONVERTED FOLDER
-            os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            # os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
 
             # EXECUTE STORED PROCEDURE FOR STAGE TO FINAL LOAD
             # sql_cmd = """EXECUTE STORED_PROCEDURE_NAME;""".format(file)
