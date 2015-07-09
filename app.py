@@ -131,7 +131,7 @@ def func_calculated_net(row):
 
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
-    if file not in os.listdir(g['DATA_FINAL_PATH']):
+    if file not in os.listdir(g['DATA_FINAL_PATH']) and file not in exclude_file:
         # DAILY REPORTS
         if '_Daily' in file:
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_DROP_PATH'], file)))
@@ -156,7 +156,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                     logger.info('Successfully converted {0}'.format(file))
 
                     # REMOVE FILE FROM DROP ZONE
-                    # os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+                    os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
                 except Exception, e:
                     logger.error('{0}. Could not pre-process {1}'.format(e, file))
                     shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
