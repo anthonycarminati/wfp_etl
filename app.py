@@ -120,19 +120,25 @@ def func_calculated_principal(row):
         return row['Principal'] * -1
 
 def func_ticket_fee(row):
-    return 1
+    if row['Prime'] == '':
+        return .0011 * row['Qty']
+    else:
+        return 0
 
 def func_total_fee(row):
-    return 1
+    return row['ticket_fee'] + row['ECN Fee'] + row['SEC Fee']
 
 def func_away_ticket(row):
-    return 1
+    if row['Commission'] == '0':
+        return 0
+    else:
+        return 15
 
 def func_total_cost(row):
-    return 1
+    return row['total_fee'] + row['away_ticket'] # + row['Commission'] # adding this back would double count commission
 
 def func_calculated_net(row):
-    return 1
+    return row['calculated_principal'] - row['total_cost']
 
 
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
