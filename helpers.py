@@ -77,4 +77,3 @@ def db_read(sql_cmd):
     cur = conn.cursor()
     cur.execute(sql_cmd)
     return cur
-
