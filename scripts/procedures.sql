@@ -42,7 +42,7 @@ SELECT
   ,CAST(native_liq AS VARCHAR(10))
   ,CAST(order_received_id AS VARCHAR(25))
   ,CAST(bo_group_id AS VARCHAR(4))
-  ,CAST(CASE WHEN side = 'B' THEN 'Buy' ELSE 'Sell' END AS varchar(10)) AS side_desc
+  ,CAST(CASE WHEN side='B' THEN 'Buy' ELSE 'Sell' END AS varchar(10)) AS side_desc
   ,CASE WHEN side = 'B' THEN CAST(quantity AS NUMERIC) ELSE -1 * CAST(quantity AS NUMERIC) END AS calculated_quantity
   ,CASE WHEN side = 'B' THEN CAST(principal AS NUMERIC) ELSE -1 * CAST(principal AS NUMERIC) END AS calculated_principal
   ,CASE WHEN prime IS NULL THEN .0011 * CAST(quantity AS NUMERIC) ELSE CAST(0 AS NUMERIC) END AS ticket_fee --ticket fees

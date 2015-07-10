@@ -2,7 +2,7 @@
 import os
 import logging
 from ftplib import FTP
-import psycopg2 as ps
+# import psycopg2 as ps
 import pandas as pd
 import shutil
 from .helpers import *
@@ -59,16 +59,40 @@ for file in ftp_files:
             ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
             logger.info('{0} downloaded successfully!'.format(file))
 
-            # CREATE AUDITING RECORD HERE
-            #############################
-            #############################
+        except Exception, e:
+            logger.error('{0}. {1} could not be downloaded'.format(e, file))
+
+    # OPEN POSITION REPORTS
+    if '_PosAvgReports' in file and file not in exclude_file and '20150708' in file:
+        file_name = file
+        file_date = file[16:24]
+
+        # DOWNLOAD DAILY REPORT FROM FTP AND CREATE AUDITING RECORD
+        try:
+            # DOWNLOAD DAILY REPORT
+            ftp.voidcmd("NOOP")
+            logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
+            ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
+            logger.info('{0} downloaded successfully!'.format(file))
 
         except Exception, e:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
     # OPEN POSITION REPORTS
-    if '_PosAvgReports' in file and file not in exclude_file:
-        pass
+    if '_PLReport' in file and file not in exclude_file and '20150708' in file:
+        file_name = file
+        file_date = file[16:24]
+
+        # DOWNLOAD DAILY REPORT FROM FTP AND CREATE AUDITING RECORD
+        try:
+            # DOWNLOAD DAILY REPORT
+            ftp.voidcmd("NOOP")
+            logger.info('Downloading {0} to DATA_DROP_PATH.'.format(file))
+            ftp.retrbinary('RETR {0}'.format(file), open('{0}{1}'.format(g['DATA_DROP_PATH'], file), 'w+').write)
+            logger.info('{0} downloaded successfully!'.format(file))
+
+        except Exception, e:
+            logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
 # CLEAN UP FILES FROM DROP FOLDER AND PLACE IN FINAL FOLDER FOR UPLOAD
 for file in os.listdir(g['DATA_DROP_PATH']):
@@ -105,7 +129,45 @@ for file in os.listdir(g['DATA_DROP_PATH']):
 
         # OPEN POSITION REPORTS
         if '_PosAvgReports' in file:
-            pass
+            try:
+                # READ AND CLEAN DATA
+                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
+                data_out = data_in[data_in.Trader != '*']
+
+                # ADD DERIVED COLUMNS
+
+
+                # WRITE NEW FILE TO FINAL FOLDER
+                data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False, sep='|')
+                logger.info('Successfully converted {0}'.format(file))
+
+                # REMOVE FILE FROM DROP ZONE
+                os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+            except Exception, e:
+                logger.error('{0}. Could not pre-process {1}'.format(e, file))
+                shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
+                logger.error('{0}. {1} moved to errors folder'.format(e, file))
+
+        # P&L REPORTS
+        if '_PLReport' in file:
+            try:
+                # READ AND CLEAN DATA
+                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
+                data_out = data_in[data_in.Trader != '*']
+
+                # ADD DERIVED COLUMNS
+
+
+                # WRITE NEW FILE TO FINAL FOLDER
+                data_out.to_csv('{0}{1}'.format(g['DATA_FINAL_PATH'], file), index=False, sep='|')
+                logger.info('Successfully converted {0}'.format(file))
+
+                # REMOVE FILE FROM DROP ZONE
+                os.remove('{0}{1}'.format(g['DATA_DROP_PATH'], file))
+            except Exception, e:
+                logger.error('{0}. Could not pre-process {1}'.format(e, file))
+                shutil.move('{0}{1}'.format(g['DATA_DROP_PATH'], file), '{0}{1}'.format(g['DATA_ERROR_PATH'], file))
+                logger.error('{0}. {1} moved to errors folder'.format(e, file))
 
 # STAGE LOAD - PUSH FILES TO DATABASE FROM DATA_FINAL_PATH
 for file in os.listdir(g['DATA_FINAL_PATH']):
@@ -147,5 +209,9 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
 
     # OPEN POSITION REPORTS
     if '_PosAvgReports' in file:
+        pass
+
+    # P&L REPORTS
+    if '_PLReport' in file:
         pass
 
