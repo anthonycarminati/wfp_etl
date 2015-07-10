@@ -63,7 +63,7 @@ for file in ftp_files:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
     # OPEN POSITION REPORTS
-    if '_PosAvgReports' in file and file not in exclude_file and '20150708' in file:
+    if '_PosAvgReport' in file and file not in exclude_file and '20150708' in file:
         file_name = file
         file_date = file[16:24]
 
@@ -128,7 +128,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
                     logger.error('{0}. {1} moved to errors folder'.format(e, file))
 
         # OPEN POSITION REPORTS
-        if '_PosAvgReports' in file:
+        if '_PosAvgReport' in file:
             try:
                 # READ AND CLEAN DATA
                 data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
@@ -208,10 +208,72 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
     # OPEN POSITION REPORTS
-    if '_PosAvgReports' in file:
-        pass
+    if '_PosAvgReport' in file:
+        try:
+            # COMPOSE AND EXECUTE COPY COMMAND
+            with open('{0}{1}'.format(g['DATA_FINAL_PATH'], file), 'rb') as copy_file:
+                sql_cmd = """""".format(file, file[20:28])
+                bulk_copy(sql_cmd, copy_file)
+
+            # LOGGING
+            logger.info('Successfully pushed {0} to database.'.format(file))
+
+            # CALCULATE METRICS FOR AUDITING
+            file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file))) - 1
+
+            # COMPOSE AND EXECUTE AUDITING RECORD
+            sql_cmd = """INSERT INTO etl_open_positions(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
+            var_dict = {'file_name': file, 'file_size': file_size, 'num_rows': num_rows}
+            etl_update(sql_cmd, var_dict)
+
+            # LOGGING
+            logger.info('Successfully wrote auditing record for {0}'.format(file))
+
+            # REMOVE FILE FROM CONVERTED FOLDER
+            os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+
+            # EXECUTE STORED PROCEDURE FOR STAGE TO FINAL LOAD
+            # sql_cmd = """EXECUTE STORED_PROCEDURE_NAME;""".format(file)
+            # cur.copy_expert(sql_cmd, copy_file)
+            # conn.commit()
+
+        except Exception, e:
+            conn.rollback()
+            logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
     # P&L REPORTS
     if '_PLReport' in file:
-        pass
+        try:
+            # COMPOSE AND EXECUTE COPY COMMAND
+            with open('{0}{1}'.format(g['DATA_FINAL_PATH'], file), 'rb') as copy_file:
+                sql_cmd = """""".format(file, file[16:24])
+                bulk_copy(sql_cmd, copy_file)
+
+            # LOGGING
+            logger.info('Successfully pushed {0} to database.'.format(file))
+
+            # CALCULATE METRICS FOR AUDITING
+            file_size = os.path.getsize('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+            num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file))) - 1
+
+            # COMPOSE AND EXECUTE AUDITING RECORD
+            sql_cmd = """INSERT INTO etl_pl_reports(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
+            var_dict = {'file_name': file, 'file_size': file_size, 'num_rows': num_rows}
+            etl_update(sql_cmd, var_dict)
+
+            # LOGGING
+            logger.info('Successfully wrote auditing record for {0}'.format(file))
+
+            # REMOVE FILE FROM CONVERTED FOLDER
+            os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
+
+            # EXECUTE STORED PROCEDURE FOR STAGE TO FINAL LOAD
+            # sql_cmd = """EXECUTE STORED_PROCEDURE_NAME;""".format(file)
+            # cur.copy_expert(sql_cmd, copy_file)
+            # conn.commit()
+
+        except Exception, e:
+            conn.rollback()
+            logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
