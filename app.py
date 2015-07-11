@@ -296,4 +296,3 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
         except Exception, e:
             conn.rollback()
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
-
