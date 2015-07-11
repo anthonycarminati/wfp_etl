@@ -99,7 +99,7 @@ for file in ftp_files:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
     # OPEN POSITION REPORTS
-    if '_PLReport' in file and file not in exclude_file and '20150708' in file:
+    if '_PLReport' in file and file not in exclude_file:
         file_name = file
         file_date = file[16:24]
 
@@ -278,7 +278,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             num_rows = sum(1 for line in open('{0}{1}'.format(g['DATA_FINAL_PATH'], file))) - 1
 
             # COMPOSE AND EXECUTE AUDITING RECORD
-            sql_cmd = """INSERT INTO etl_pl_report(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
+            sql_cmd = """INSERT INTO etl_daily_pl_report(file_name, file_size, num_rows) VALUES(%(file_name)s, %(file_size)s, %(num_rows)s);"""
             var_dict = {'file_name': file, 'file_size': file_size, 'num_rows': num_rows}
             etl_update(sql_cmd, var_dict)
 
