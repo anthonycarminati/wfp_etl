@@ -64,5 +64,30 @@ CREATE TABLE stg_daily_open_positions(
 );
 GRANT ALL ON stg_daily_open_positions to wfp_etl;
 
+CREATE TABLE stg_daily_pl_report(
+  account VARCHAR(255)
+  ,symbol VARCHAR(255)
+  ,realized VARCHAR(255)
+  ,unrealized VARCHAR(255)
+  ,trades VARCHAR(255)
+  ,volume VARCHAR(255)
+  ,date VARCHAR(255)
+  ,ecn_fee VARCHAR(255)
+  ,sec_Fee VARCHAR(255)
+  ,commission VARCHAR(255)
+  ,nasdaq_fee VARCHAR(255)
+  ,nscc_Fee VARCHAR(255)
+  ,clearing_fee VARCHAR(255)
+  ,orders_yielding_exec VARCHAR(255)
+  ,position VARCHAR(255)
+  ,closing_price VARCHAR(255)
+  ,nyse_fee VARCHAR(255)
+  ,amex_fee VARCHAR(255)
+  ,nasdaq_etf VARCHAR(255)
+  ,file_name VARCHAR(255)
+  ,file_date VARCHAR(255)
+);
+GRANT ALL ON stg_daily_open_positions to wfp_etl;
 
 
+account,symbol,realized,unrealized,trades,volume,date,ecn_fee,sec_Fee,commission,nasdaq_fee,nscc_Fee,clearing_fee,orders_yielding_exec,position,closing_price,nyse_fee,amex_fee,nasdaq_etf,file_name,file_date

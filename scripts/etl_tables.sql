@@ -18,7 +18,7 @@ CREATE TABLE etl_daily_open_positions(
 );
 GRANT ALL ON etl_daily_open_positions TO wfp_etl;
 
-CREATE TABLE etl_daily_pl_reports(
+CREATE TABLE etl_daily_pl_report(
   file_name VARCHAR(100)
   ,file_size INT
   ,num_rows INT
@@ -26,4 +26,4 @@ CREATE TABLE etl_daily_pl_reports(
   ,load_to_final_time TIMESTAMP
   ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
 );
-GRANT ALL ON etl_daily_pl_reports TO wfp_etl;
+GRANT ALL ON etl_daily_pl_report TO wfp_etl;
