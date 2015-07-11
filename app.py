@@ -43,6 +43,26 @@ sql_cmd = """SELECT file_name FROM etl_daily_trades;"""
 cur.execute(sql_cmd)
 for file in cur:
     exclude_file.append(file[0])  # CURSOR RETURNS DATA IN TUPLE
+conn = ps.connect(host=g['POSTGRES_HOST'],
+                  port='5432',
+                  user=g['POSTGRES_USER'],
+                  password=g['POSTGRES_PWD'],
+                  database=g['POSTGRES_DB'])
+cur = conn.cursor()
+sql_cmd = """SELECT file_name FROM etl_daily_open_positions;"""
+cur.execute(sql_cmd)
+for file in cur:
+    exclude_file.append(file[0])  # CURSOR RETURNS DATA IN TUPLE
+conn = ps.connect(host=g['POSTGRES_HOST'],
+                  port='5432',
+                  user=g['POSTGRES_USER'],
+                  password=g['POSTGRES_PWD'],
+                  database=g['POSTGRES_DB'])
+cur = conn.cursor()
+sql_cmd = """SELECT file_name FROM etl_daily_pl_report;"""
+cur.execute(sql_cmd)
+for file in cur:
+    exclude_file.append(file[0])  # CURSOR RETURNS DATA IN TUPLE
 
 # DOWNLOAD FILES
 for file in ftp_files:
