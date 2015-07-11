@@ -6,6 +6,7 @@ CREATE TABLE etl_daily_trades(
   ,load_to_final_time TIMESTAMP
   ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
 );
+GRANT ALL ON etl_daily_trades TO wfp_etl;
 
 CREATE TABLE etl_daily_open_positions(
   file_name VARCHAR(100)
@@ -15,6 +16,7 @@ CREATE TABLE etl_daily_open_positions(
   ,load_to_final_time TIMESTAMP
   ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
 );
+GRANT ALL ON etl_daily_open_positions TO wfp_etl;
 
 CREATE TABLE etl_daily_pl_reports(
   file_name VARCHAR(100)
@@ -24,3 +26,4 @@ CREATE TABLE etl_daily_pl_reports(
   ,load_to_final_time TIMESTAMP
   ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
 );
+GRANT ALL ON etl_daily_pl_reports TO wfp_etl;

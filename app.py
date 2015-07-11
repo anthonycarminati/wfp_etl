@@ -63,7 +63,7 @@ for file in ftp_files:
             logger.error('{0}. {1} could not be downloaded'.format(e, file))
 
     # OPEN POSITION REPORTS
-    if '_PosAvgReport' in file and file not in exclude_file and '20150708' in file:
+    if '_PosAvgReport' in file and file not in exclude_file:
         file_name = file
         file_date = file[16:24]
 
