@@ -62,7 +62,7 @@ CREATE TABLE stg_daily_open_positions(
   ,file_name VARCHAR(255)
   ,file_date VARCHAR(255)
 );
-GRANT ALL ON stg_daily_trades to wfp_etl;
+GRANT ALL ON stg_daily_open_positions to wfp_etl;
 
 
 

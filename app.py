@@ -212,7 +212,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
         try:
             # COMPOSE AND EXECUTE COPY COMMAND
             with open('{0}{1}'.format(g['DATA_FINAL_PATH'], file), 'rb') as copy_file:
-                sql_cmd = """COPY stg_daily_open_positions(account,symbol,pos_qty,pos_avg_price,pos_value,file_name,file_date) FROM STDIN WITH CSV HEADER DELIMITER AS '|'; UPDATE stg_daily_open_positions SET file_name = '{0}', file_date = '{1}' WHERE file_name IS NULL AND file_date IS NULL;""".format(file, file[20:28])
+                sql_cmd = """COPY stg_daily_open_positions(account,symbol,pos_qty,pos_avg_price,pos_value) FROM STDIN WITH CSV HEADER DELIMITER AS '|'; UPDATE stg_daily_open_positions SET file_name = '{0}', file_date = '{1}' WHERE file_name IS NULL AND file_date IS NULL;""".format(file, file[20:28])
                 bulk_copy(sql_cmd, copy_file)
 
             # LOGGING
