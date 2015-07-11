@@ -53,7 +53,16 @@ CREATE TABLE stg_daily_trades(
 );
 GRANT ALL ON stg_daily_trades to wfp_etl;
 
-
+CREATE TABLE stg_daily_open_positions(
+  account VARCHAR(255)
+  ,symbol VARCHAR(255)
+  ,pos_qty VARCHAR(255)
+  ,pos_avg_price VARCHAR(255)
+  ,pos_value VARCHAR(255) --calculated in python
+  ,file_name VARCHAR(255)
+  ,file_date VARCHAR(255)
+);
+GRANT ALL ON stg_daily_trades to wfp_etl;
 
 
 

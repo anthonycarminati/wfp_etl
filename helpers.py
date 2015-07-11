@@ -2,7 +2,7 @@ import psycopg2 as ps
 from .config import g
 
 # ############################################################################
-# DAILY TRADE CALCULATIONS
+# STERLING CALCULATIONS
 # ############################################################################
 def func_side_desc(row):
     if row['Side'] == 'B':
@@ -42,6 +42,9 @@ def func_total_cost(row):
 
 def func_calculated_net(row):
     return row['calculated_principal'] - row['total_cost']
+
+def func_pos_value(row):
+    return row['Position'] * row['PositionAVGPrice']
 
 # ############################################################################
 # PSYCOPG2 QUICK FUNCTIONS

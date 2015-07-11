@@ -6,3 +6,21 @@ CREATE TABLE etl_daily_trades(
   ,load_to_final_time TIMESTAMP
   ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
 );
+
+CREATE TABLE etl_daily_open_positions(
+  file_name VARCHAR(100)
+  ,file_size INT
+  ,num_rows INT
+  ,load_to_stage_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ,load_to_final_time TIMESTAMP
+  ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
+);
+
+CREATE TABLE etl_daily_pl_reports(
+  file_name VARCHAR(100)
+  ,file_size INT
+  ,num_rows INT
+  ,load_to_stage_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ,load_to_final_time TIMESTAMP
+  ,CONSTRAINT pk_file_name PRIMARY KEY (file_name)
+);
