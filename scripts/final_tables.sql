@@ -40,4 +40,15 @@ CREATE TABLE fact_daily_trades(
   ,native_liq VARCHAR(10)
   ,order_received_id VARCHAR(25)
   ,bo_group_id VARCHAR(4)
+  ,side_desc VARCHAR(10)
+  ,calculated_quantity DECIMAL
+  ,calculated_principal DECIMAL
+  ,ticket_fee DECIMAL
+  ,total_fee DECIMAL
+  ,away_ticket DECIMAL
+  ,total_cost DECIMAL
+  ,calculated_net DECIMAL
+  ,file_name VARCHAR(50)
+  ,file_date VARCHAR(8)
 );
+GRANT ALL ON fact_daily_trades TO wfp_etl;

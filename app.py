@@ -2,7 +2,6 @@
 import os
 import logging
 from ftplib import FTP
-# import psycopg2 as ps
 import pandas as pd
 import shutil
 from .helpers import *
