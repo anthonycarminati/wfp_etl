@@ -12,15 +12,15 @@ def func_side_desc(row):
 
 def func_calculated_quantity(row):
     if row['Side'] == 'B':
-        return row['Qty'] * 1
+        return row['Qty'] * -1 #switched
     else:
-        return row['Qty'] * -1
+        return row['Qty'] * 1 #switched
 
 def func_calculated_principal(row):
     if row['Side'] == 'B':
-        return row['Principal'] * 1
+        return row['Principal'] * -1 #switched
     else:
-        return row['Principal'] * -1
+        return row['Principal'] * 1 #switched
 
 def func_ticket_fee(row):
     if row['Prime'] == '':

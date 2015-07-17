@@ -51,4 +51,4 @@ CREATE TABLE fact_daily_trades(
   ,file_name VARCHAR(50)
   ,file_date VARCHAR(8)
 );
-GRANT ALL ON fact_daily_trades TO wfp_etl;
+GRANT SELECT ON fact_daily_trades TO wfp_etl;
