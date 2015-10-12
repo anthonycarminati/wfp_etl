@@ -88,6 +88,3 @@ CREATE TABLE stg_daily_pl_report(
   ,file_date VARCHAR(255)
 );
 GRANT ALL ON stg_daily_pl_report to wfp_etl;
-
-
-account,symbol,realized,unrealized,trades,volume,date,ecn_fee,sec_Fee,commission,nasdaq_fee,nscc_Fee,clearing_fee,orders_yielding_exec,position,closing_price,nyse_fee,amex_fee,nasdaq_etf,file_name,file_date

@@ -1,5 +1,6 @@
 SELECT
-  datum AS date
+  CAST(replace(CAST(datum as VARCHAR(10)), '-', '') AS INTEGER) AS date_id
+  ,datum AS date
   ,EXTRACT(YEAR FROM datum) AS year
   ,EXTRACT(MONTH FROM datum) AS month --Localized month name
   ,TO_CHAR(datum, 'TMMonth') AS month_name

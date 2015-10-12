@@ -52,3 +52,39 @@ CREATE TABLE fact_daily_trades(
   ,file_date VARCHAR(8)
 );
 GRANT SELECT ON fact_daily_trades TO wfp_etl;
+
+CREATE TABLE fact_daily_open_positions(
+  account VARCHAR(50)
+  ,symbol VARCHAR(25)
+  ,pos_qty DECIMAL
+  ,pos_avg_price DECIMAL
+  ,pos_value DECIMAL
+  ,file_name VARCHAR(50)
+  ,file_date VARCHAR(8)
+);
+GRANT SELECT ON fact_daily_open_positions TO wfp_etl;
+
+CREATE TABLE fact_daily_pl_report(
+  account VARCHAR(50)
+  ,symbol VARCHAR(10)
+  ,realized DECIMAL
+  ,unrealized DECIMAL
+  ,trades DECIMAL
+  ,volume DECIMAL
+  ,date VARCHAR(10)
+  ,ecn_fee DECIMAL
+  ,sec_Fee DECIMAL
+  ,commission DECIMAL
+  ,nasdaq_fee DECIMAL
+  ,nscc_Fee DECIMAL
+  ,clearing_fee DECIMAL
+  ,orders_yielding_exec DECIMAL
+  ,position DECIMAL
+  ,closing_price DECIMAL
+  ,nyse_fee DECIMAL
+  ,amex_fee DECIMAL
+  ,nasdaq_etf DECIMAL
+  ,file_name VARCHAR(50)
+  ,file_date VARCHAR(8)
+);
+GRANT SELECT ON fact_daily_pl_report TO wfp_etl;
