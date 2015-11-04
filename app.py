@@ -288,9 +288,15 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             os.remove('{0}{1}'.format(g['DATA_FINAL_PATH'], file))
 
             # EXECUTE STORED PROCEDURE FOR STAGE TO FINAL LOAD
-            # sql_cmd = """EXECUTE STORED_PROCEDURE_NAME;""".format(file)
-            # cur.copy_expert(sql_cmd, copy_file)
-            # conn.commit()
+            conn = ps.connect(host=g['POSTGRES_HOST'],
+                  port='5432',
+                  user=g['POSTGRES_USER'],
+                  password=g['POSTGRES_PWD'],
+                  database=g['POSTGRES_DB'])
+            cur = conn.cursor()
+            sql_cmd = """SELECT stg_to_final_pl_report();"""
+            cur.execute(sql_cmd)
+
 
         except Exception, e:
             conn.rollback()
