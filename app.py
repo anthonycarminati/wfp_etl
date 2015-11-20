@@ -296,6 +296,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             cur = conn.cursor()
             sql_cmd = """SELECT stg_to_final_pl_report();"""
             cur.execute(sql_cmd)
+            cur.execute("COMMIT")
 
 
         except Exception, e:
@@ -303,8 +304,16 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
 
 # FINAL LOAD - RUN STORED PROCEDURE FOR EACH STREAM
-try:
-    db_read('SELECT stg_to_final_pl_report();')
-    logger.info('Successfully ran stage to final for PL Report')
-except Exception, e:
-    logger.error('Unsuccessfully ran stage to final for PL Report')
+# try:
+#     conn = ps.connect(host=g['POSTGRES_HOST'],
+#                   port='5432',
+#                   user=g['POSTGRES_USER'],
+#                   password=g['POSTGRES_PWD'],
+#                   database=g['POSTGRES_DB'])
+#     cur = conn.cursor()
+#     sql_cmd = """SELECT stg_to_final_pl_report();"""
+#     cur.execute(sql_cmd)
+#     db_read('SELECT stg_to_final_pl_report();')
+#     logger.info('Successfully ran stage to final for PL Report')
+# except Exception, e:
+#     logger.error('Unsuccessfully ran stage to final for PL Report')
