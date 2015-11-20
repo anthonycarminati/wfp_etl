@@ -1,5 +1,5 @@
 import psycopg2 as ps
-from .config import g
+from config import g
 
 # ############################################################################
 # STERLING CALCULATIONS
