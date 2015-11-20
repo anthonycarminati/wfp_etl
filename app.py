@@ -122,7 +122,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
             if num_rows > 2:
                 try:
                     # READ AND CLEAN DATA
-                    data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
+                    data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep=',', na_values='NULL')
                     data_out = data_in[data_in.Trader != '*']
 
                     # ADD DERIVED COLUMNS
@@ -150,7 +150,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         if '_PosAvgReport' in file:
             try:
                 # READ AND CLEAN DATA
-                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
+                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep=',', na_values='NULL')
                 data_out = data_in
 
                 # ADD DERIVED COLUMNS
@@ -171,7 +171,7 @@ for file in os.listdir(g['DATA_DROP_PATH']):
         if '_PLReport' in file:
             try:
                 # READ AND CLEAN DATA
-                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep = ',', na_values='NULL')
+                data_in = pd.read_csv('{0}{1}'.format(g['DATA_DROP_PATH'], file), sep=',', na_values='NULL')
                 data_out = data_in
 
                 # ADD DERIVED COLUMNS
@@ -301,3 +301,10 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
         except Exception, e:
             conn.rollback()
             logger.error('{0}. {1} could not be pushed to database'.format(e, file))
+
+# FINAL LOAD - RUN STORED PROCEDURE FOR EACH STREAM
+try:
+    db_read('SELECT stg_to_final_pl_report();')
+    logger.info('Successfully ran stage to final for PL Report')
+except Exception, e:
+    logger.error('Unsuccessfully ran stage to final for PL Report')
