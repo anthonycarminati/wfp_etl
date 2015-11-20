@@ -297,6 +297,7 @@ for file in os.listdir(g['DATA_FINAL_PATH']):
             sql_cmd = """SELECT stg_to_final_pl_report();"""
             cur.execute(sql_cmd)
             cur.execute("COMMIT")
+            logger.info('Successfully ran stage to final logic.')
 
 
         except Exception, e:
